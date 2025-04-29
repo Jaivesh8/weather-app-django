@@ -1,12 +1,18 @@
 from django.shortcuts import render
 import json
 import urllib.request
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load variables from .env
+
 
 # Create your views here.
 def index(request):
     if request.method == 'POST':
         city = request.POST['city']
-        res = urllib.request.urlopen('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=a254b96f5ed8a6217be98f419353a838').read()
+        res = urllib.request.urlopen(
+    'https://api.openweathermap.org/data/2.5/weather?q=' + city +'&appid=' + os.getenv("OPENWEATHER_API_KEY")).read()
         json_data = json.loads(res)
         data = {
             "country_code":str(json_data['sys']['country']),
